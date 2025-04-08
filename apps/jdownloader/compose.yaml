@@ -15,11 +15,7 @@ services:
       # - ENABLE_SSL=yes
     volumes:
       - ${JD_CONFIG_PATH}:/config
-      - ${GAMES_PATH}:/games
-      - ${EBOOKS_PATH}:/ebooks
-      - ${COMICS_PATH}:/comics
-      - ${MAGAZINES_PATH}:/magazines
-      - ${MANGAS_PATH}:/mangas
+      - ${DOWNLOAD_PATH}:/download
       # To enable HTTPS, uncomment the following line
       # - ${SSL_CERTS_PATH}:/config/certs:ro
     ports:
