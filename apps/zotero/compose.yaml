@@ -1,0 +1,33 @@
+name: zotero
+services:
+  zotero:
+    image: linuxserver/zotero:7.0.15-ls71
+    container_name: zotero
+    ports:
+      - ${WEB_PORT}:3001
+    volumes:
+      - ${ZOTERO_CONFIG_PATH}:/config
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - CUSTOM_USER=${CUSTOM_USER}
+      - PASSWORD=${PASSWORD}
+    deploy:
+      resources:
+        limits:
+          memory: ${MEMORY}
+    restart: unless-stopped
+    security_opt:
+      - seccomp:unconfined
+    shm_size: 1gb
+    labels:
+      - homepage.group=${HOMEPAGE_GROUP}
+      - homepage.name=${HOMEPAGE_NAME}
+      - homepage.icon=${HOMEPAGE_ICON}
+      - homepage.href=https://${SERVER_IP}:3001
+      - homepage.description=${HOMEPAGE_DESCRIPTION}
+    networks:
+      - default
+networks:
+  default: null
