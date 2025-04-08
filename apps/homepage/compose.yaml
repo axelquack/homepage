@@ -1,0 +1,35 @@
+name: homepage
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:v1.1.1
+    container_name: homepage
+    ports:
+      - ${WEB_PORT}:3000
+    volumes:
+      - ${HOMEPAGE_CONFIG_PATH}:/app/config
+    environment:
+      - LOG_LEVEL=info
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - HOMEPAGE_ALLOWED_HOSTS=${HOMEPAGE_ALLOWED_HOSTS}
+    restart: unless-stopped
+    networks:
+      - homepage-net
+  docker-socket-proxy:
+    image: tecnativa/docker-socket-proxy:latest
+    container_name: docker-socket-proxy
+    environment:
+      - LOG_LEVEL=debug
+      - CONTAINERS=1
+      - POST=0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 127.0.0.1:2375:2375
+    restart: unless-stopped
+    networks:
+      - homepage-net
+networks:
+  homepage-net:
+    external: true
