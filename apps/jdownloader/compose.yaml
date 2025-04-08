@@ -1,0 +1,43 @@
+name: jdownloader
+services:
+  jdownloader:
+    image: jlesage/jdownloader-2:latest
+    container_name: jdownloader
+    environment:
+      - TZ=${TZ}
+      - USER_ID=${PUID}
+      - GROUP_ID=${PGID}
+      - LANG=de_DE.UTF-8
+      - WEB_USER=${WEB_USER}
+      - WEB_PASSWORD=${WEB_PASSWORD}
+      - DARK_MODE=1 # activates the dark mode
+      # To enable HTTPS, uncomment the following lines and provide certificates
+      # - ENABLE_SSL=yes
+    volumes:
+      - ${JD_CONFIG_PATH}:/config
+      - ${GAMES_PATH}:/games
+      - ${EBOOKS_PATH}:/ebooks
+      - ${COMICS_PATH}:/comics
+      - ${MAGAZINES_PATH}:/magazines
+      - ${MANGAS_PATH}:/mangas
+      # To enable HTTPS, uncomment the following line
+      # - ${SSL_CERTS_PATH}:/config/certs:ro
+    ports:
+      - ${WEB_PORT}:5800
+    mem_limit: 4g
+    restart: unless-stopped
+    labels:
+      # Service Definition
+      - homepage.group=${HOMEPAGE_GROUP}
+      - homepage.name=${HOMEPAGE_NAME}
+      - homepage.icon=${HOMEPAGE_ICON}
+      - homepage.href=http://${SERVER_IP}:${WEB_PORT}
+      - homepage.description=${HOMEPAGE_DESCRIPTION}
+      # Widget Definition
+      - homepage.widget.type=jdownloader
+      - homepage.widget.username=${MYJD_USERNAME}
+      - homepage.widget.password=${MYJD_PASSWORD}
+      - homepage.widget.client=${MYJD_CLIENT}
+      - homepage.widget.fields=["downloadCount",
+        "downloadTotalBytes","downloadBytesRemaining", "downloadSpeed"]
+networks: {}
